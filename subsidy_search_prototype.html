@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>補助金検索システム - プロトタイプ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #0078d7;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .search-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .search-bar input, .search-bar select, .search-bar button {
+            padding: 0.5rem;
+            font-size: 1rem;
+        }
+        .search-bar button {
+            background-color: #0078d7;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .search-bar button:hover {
+            background-color: #005bb5;
+        }
+        .result {
+            margin-top: 2rem;
+        }
+        .result-item {
+            padding: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+        .result-item h3 {
+            margin: 0 0 0.5rem;
+        }
+        .result-item p {
+            margin: 0.5rem 0;
+        }
+        .result-item a {
+            color: #0078d7;
+            text-decoration: none;
+        }
+        .result-item a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>補助金検索システム</h1>
+    </header>
+    <div class="container">
+        <div class="search-bar">
+            <select id="region">
+                <option value="">地域を選択</option>
+                <option value="hokkaido">北海道</option>
+                <option value="kyushu">九州</option>
+                <option value="tokyo">東京</option>
+            </select>
+            <input type="text" id="keyword" placeholder="キーワードを入力">
+            <button onclick="searchSubsidies()">検索</button>
+        </div>
+        <div class="result" id="result">
+            <p>ここに検索結果が表示されます。</p>
+        </div>
+    </div>
+    <script>
+        function searchSubsidies() {
+            const region = document.getElementById('region').value;
+            const keyword = document.getElementById('keyword').value;
+            const resultDiv = document.getElementById('result');
+
+            resultDiv.innerHTML = "<p>検索中...</p>";
+
+            // ダミーデータ（本来はAPIなどから取得）
+            const dummyData = [
+                {
+                    title: "九州地域の中小企業支援補助金",
+                    description: "九州地域の中小企業向けの補助金です。",
+                    link: "https://example.com/subsidy/1"
+                },
+                {
+                    title: "創業支援補助金",
+                    description: "新規創業者を対象とした補助金。",
+                    link: "https://example.com/subsidy/2"
+                }
+            ];
+
+            // 結果のフィルタリング（ダミー処理）
+            const filteredData = dummyData.filter(item => 
+                (!region || item.title.includes(region)) &&
+                (!keyword || item.title.includes(keyword))
+            );
+
+            // 結果の表示
+            if (filteredData.length > 0) {
+                resultDiv.innerHTML = filteredData.map(item => `
+                    <div class="result-item">
+                        <h3>${item.title}</h3>
+                        <p>${item.description}</p>
+                        <a href="${item.link}" target="_blank">詳細を見る</a>
+                    </div>
+                `).join('');
+            } else {
+                resultDiv.innerHTML = "<p>該当する補助金が見つかりませんでした。</p>";
+            }
+        }
+    </script>
+</body>
+</html>
